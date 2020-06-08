@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Form Validation</title>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <style type="text/css">
+        body {
+            font-size: 160%;
+            font-family: Helvetica, sans-serif;
+            margin-top: 50px;
+        }
+
+        input {
+            font-size: 22px;
+            border: 1px solid grey;
+            border-radius: 5px;
+            padding: 10px 10px 12px 10px;
+            width: 300px;
+        }
+
+        label {
+            position: relative;
+            top: 10px;
+            width: 220px;
+            float: left;
+        }
+
+        #wrapper {
+            width: 640px;
+            margin: 0 auto;
+        }
+
+        .form-element {
+            margin-bottom: 20px;
+            float: left;
+        }
+
+        #submit-button {
+            width: 100px;
+            margin-left: 220px;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+            float: right;
+            margin-top: 18px;
+            margin-left: 5px;
+        }
+
+        #message {
+            color: green;
+            margin-left: 220px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div class="form-element">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" placeholder="firstname lastname">
+            <p id="username-error" class="error"></p>
+        </div>
+        <div class="form-element">
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email" placeholder="yourname@email.com">
+            <p id="email-error" class="error"></p>
+        </div>
+        <div class="form-element">
+            <label for="contact">Contact Number</label>
+            <input type="text" name="contact" id="contact" placeholder="01XXXXXXXXX">
+            <p id="contact-error" class="error"></p>
+        </div>
+        <div class="form-element">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password">
+            <p id="length-error" class="error"></p>
+        </div>
+        <div class="form-element">
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" name="confirm-password" id="confirm-password">
+            <p id="password-error" class="error"></p>
+        </div>
+        <div class="form-element">
+            <input type="submit" id="submit-button" value="Sign up">
+            <p id="message">Signed in successfully!</p>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function isEmail(email) {
+            var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            return regex.test(email);
+        }
+        $("#submit-button").click(function () {
+            var error = 0;
+            if ($("#username").val() == "") {
+                error = 1;
+                $("#username-error").css("display", "block");
+                $("#username-error").html("Invalid username");
+            } else {
+                error = 0;
+                $("#username-error").css("display", "none");
+            }
+            if (isEmail($("#email").val()) == false) {
+                error = 1;
+                $("#email-error").css("display", "block");
+                $("#email-error").html("Invalid email address");
+            } else {
+                error = 0;
+                $("#email-error").css("display", "none");
+            }
+            if ($.isNumeric($("#contact").val()) == false) {
+                error = 1;
+                $("#contact-error").css("display", "block");
+                $("#contact-error").html("Invalid contact");
+            } else {
+                error = 0;
+                $("#contact-error").css("display", "none");
+            }
+            if ($("#password").val().length < 8) {
+                error = 1;
+                $("#length-error").css("display", "block");
+                $("#length-error").html("At least 8 characters");
+            } else {
+                error = 0;
+                $("#length-error").css("display", "none");
+                if ($("#password").val() != $("#confirm-password").val()) {
+                    error = 1;
+                    $("#password-error").css("display", "block");
+                    $("#password-error").html("Reconfirm Password");
+                } else {
+                    error = 0;
+                    $("#password-error").css("display", "none");
+                }
+            }
+
+            if (($("#username").val() == "") || ($("#password").val() == "") || ($("#email").val() == "") || ($("#contact").val() == "")) {
+                $("#message").html("Please fill all the fields");
+                $("#message").css("color", "red");
+                $("#message").show();
+            }
+            else {
+                if (error == 0) {
+                    $("#message").html("Signed in successfully!");
+                    $("#message").css("color", "green");
+                    $("#message").show();
+                }else{
+                    $("#message").hide();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
